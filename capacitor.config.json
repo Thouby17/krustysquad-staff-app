@@ -1,0 +1,9 @@
+{
+  "appId": "be.krustysquad.staff",
+  "appName": "Krusty Squad Staff",
+  "webDir": "www",
+  "server": {
+    "url": "https://krusty-squad.vercel.app/staff",
+    "cleartext": false
+  }
+}
