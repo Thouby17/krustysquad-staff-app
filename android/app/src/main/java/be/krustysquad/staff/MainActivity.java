@@ -38,13 +38,13 @@ public class MainActivity extends BridgeActivity {
     public static volatile boolean isForeground = false;
 
     @Override
-    protected void onResume() {
+    public void onResume() {
         super.onResume();
         isForeground = true;
     }
 
     @Override
-    protected void onPause() {
+    public void onPause() {
         isForeground = false;
         super.onPause();
     }
