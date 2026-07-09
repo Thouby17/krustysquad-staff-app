@@ -29,6 +29,26 @@ import java.util.concurrent.TimeUnit;
  */
 public class MainActivity extends BridgeActivity {
 
+    /**
+     * Vrai quand l'écran staff est au premier plan (app visible, écran allumé).
+     * Lu par {@link OrderWatchService} : quand l'app est devant, c'est l'alarme
+     * du SITE qui sonne (et se répète), donc le service natif se tait pour ne
+     * pas doubler l'alarme. Le natif ne ré-alerte que écran éteint / en fond.
+     */
+    public static volatile boolean isForeground = false;
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        isForeground = true;
+    }
+
+    @Override
+    protected void onPause() {
+        isForeground = false;
+        super.onPause();
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
