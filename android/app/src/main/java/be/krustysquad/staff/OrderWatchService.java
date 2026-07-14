@@ -14,6 +14,7 @@ import android.os.Build;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.IBinder;
+import android.graphics.BitmapFactory;
 import android.webkit.CookieManager;
 
 import androidx.core.app.NotificationCompat;
@@ -77,7 +78,7 @@ public class OrderWatchService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         NotificationCompat.Builder b = new NotificationCompat.Builder(this, CH_SERVICE)
-                .setSmallIcon(R.drawable.ic_launcher_foreground)
+                .setSmallIcon(R.drawable.ic_stat_order)
                 .setContentTitle("Krusty Squad Staff")
                 .setContentText("Surveillance des commandes active")
                 .setOngoing(true)
@@ -229,8 +230,13 @@ public class OrderWatchService extends Service {
                 this, id, open,
                 PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT);
 
+        // Identité de l'app dans la notification : cloche monochrome en barre de
+        // statut (norme Android), logo Krusty en grand, accent rouge de marque —
+        // avant, le dessin par défaut du modèle rendait la notif « anonyme ».
         NotificationCompat.Builder b = new NotificationCompat.Builder(this, CH_ORDERS)
-                .setSmallIcon(R.drawable.ic_launcher_foreground)
+                .setSmallIcon(R.drawable.ic_stat_order)
+                .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher))
+                .setColor(0xFFE12C1F)
                 .setContentTitle("🍔 Nouvelle commande #" + shown)
                 .setContentText(customer)
                 .setPriority(NotificationCompat.PRIORITY_MAX)
