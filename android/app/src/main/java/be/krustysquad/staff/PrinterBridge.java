@@ -156,7 +156,16 @@ public class PrinterBridge {
                 byte[] data = Base64.decode(base64Data, Base64.DEFAULT);
                 BluetoothDevice device = adapter.getRemoteDevice(mac);
                 // Une découverte en cours ralentit/casse la connexion : on l'arrête.
-                adapter.cancelDiscovery();
+                // ⚠️ Dans son PROPRE try/catch : sur Android 12+, cancelDiscovery()
+                // exige BLUETOOTH_SCAN (qu'on ne demande pas — on ne lance jamais de
+                // découverte nous-mêmes). Sans cette isolation, la SecurityException
+                // faisait échouer TOUTE l'impression avec « autorisation refusée »
+                // alors que la connexion, elle, ne demande que BLUETOOTH_CONNECT.
+                try {
+                    adapter.cancelDiscovery();
+                } catch (SecurityException ignored) {
+                    // Appel purement défensif : sans lui la connexion marche aussi.
+                }
                 socket = device.createRfcommSocketToServiceRecord(SPP_UUID);
                 socket.connect();
                 OutputStream out = socket.getOutputStream();
