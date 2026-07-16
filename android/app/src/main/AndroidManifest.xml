@@ -61,4 +61,27 @@
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <!-- Mise à jour in-app : ouvrir l'installateur Android sur l'APK téléchargé. -->
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
+
+    <!-- Impression BLUETOOTH (imprimante appairée, profil SPP).
+         Android 12+ (API 31) : BLUETOOTH_CONNECT est une permission D'EXÉCUTION,
+         demandée au lancement (voir MainActivity). Sans elle, la liste des
+         imprimantes revient VIDE sans erreur explicite.
+         `neverForLocation` : on ne se sert PAS du Bluetooth pour localiser —
+         sans ce drapeau, Android exigerait en plus la permission de localisation,
+         que le staff refuserait à juste titre. -->
+    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT"
+        android:usesPermissionFlags="neverForLocation" />
+    <!-- Anciennes versions (Android 11 et moins) : permissions de manifest. -->
+    <uses-permission android:name="android.permission.BLUETOOTH"
+        android:maxSdkVersion="30" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"
+        android:maxSdkVersion="30" />
+
+    <!-- Impression USB (imprimante branchée en direct sur la tablette).
+         Pas de permission de manifest : l'autorisation se demande à l'exécution,
+         périphérique par périphérique (PrinterBridge.requestUsbPermission).
+         `required="false"` : l'app doit rester installable sur une tablette
+         sans port USB hôte — c'est le cas de la majorité. -->
+    <uses-feature android:name="android.hardware.usb.host" android:required="false" />
+    <uses-feature android:name="android.hardware.bluetooth" android:required="false" />
 </manifest>
