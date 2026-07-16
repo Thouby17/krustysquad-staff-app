@@ -14,7 +14,7 @@ Imprimante, ni impression auto, ni journal d'appareils.
 
 | Volet | Où | Contenu |
 |---|---|---|
-| A — Web | Dépôt web du client (`C:\Users\thoub\<Client> Web App`) | détection du pont natif, ESC/POS, réglages imprimante, impression auto, logs appareils |
+| A — Web | Dépôt web du client (`F:\Claude\restaurants\clients\<Client>\<Client> Web App`) | détection du pont natif, ESC/POS, réglages imprimante, impression auto, logs appareils |
 | B — Coquille | Nouveau repo `<client>-staff-app` (copie de celui-ci) | WebView plein écran, pont d'impression TCP, notifications natives, icône client |
 
 **Fonctionnalités attendues de l'APK fini** (parité avec Brooklyn v1.3) :
@@ -70,8 +70,8 @@ puis `npx tsc --noEmit`. Détail des protocoles : skill `restaurant-apps-method`
 ### B1. Copier ce repo (sans l'historique ni les builds)
 
 ```powershell
-robocopy "C:\Users\thoub\brooklyn-staff-app" "C:\Users\thoub\<client>-staff-app" /E /XD node_modules .git .gradle build
-cd "C:\Users\thoub\<client>-staff-app"
+robocopy "F:\Claude\restaurants\clients\Brooklyn Food\brooklyn-staff-app" "F:\Claude\restaurants\clients\<Client>\<client>-staff-app" /E /XD node_modules .git .gradle build
+cd "F:\Claude\restaurants\clients\<Client>\<client>-staff-app"
 npm install
 ```
 
@@ -102,7 +102,7 @@ Choisir : **appId** `be.<domainesansbe>.staff` (ex. `be.krustysquad.staff`),
 ### B3. Icônes = logo du client (script fourni, testé)
 
 ```bash
-node scripts/make-icons.mjs "C:\Users\thoub\<Client> Web App\public\icon-app.png" --bg "#111111"
+node scripts/make-icons.mjs "F:\Claude\restaurants\clients\<Client>\<Client> Web App\public\icon-app.png" --bg "#111111"
 ```
 Génère les 15 PNG mipmap + la couleur de fond adaptive. Le script **refuse un logo
 sans vraie transparence** (piège des PNG IA au damier peint) — dans ce cas, détourer
@@ -119,11 +119,11 @@ gh repo create Thouby17/<client>-staff-app --public --source . --push
 (Public comme brooklyn-staff-app : builds Actions illimités.)
 
 **⚠️ Obligatoire — copier les 3 secrets de signature sur le nouveau repo** (sinon le
-build échoue) : la clé permanente vit dans `C:\Users\thoub\APK-SIGNING-KEY\`
+build échoue) : la clé permanente vit dans `F:\Claude\restaurants\secrets\APK-SIGNING-KEY\`
 (UNE clé pour tous les clients — voir son LISEZMOI) :
 
 ```bash
-cd C:/Users/thoub/APK-SIGNING-KEY
+cd F:/Claude/restaurants/secrets/APK-SIGNING-KEY
 openssl base64 -A -in staff-apps-release.p12 | gh secret set KEYSTORE_BASE64 --repo Thouby17/<client>-staff-app
 gh secret set KEYSTORE_PASSWORD --repo Thouby17/<client>-staff-app --body "$(cat .password.txt)"
 gh secret set KEY_ALIAS --repo Thouby17/<client>-staff-app --body "staffapps"
