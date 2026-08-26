@@ -3,7 +3,7 @@
   "appName": "Krusty Squad Staff",
   "webDir": "www",
   "server": {
-    "url": "https://krusty-squad.vercel.app/staff",
+    "url": "https://krustysmash.be/staff",
     "cleartext": false
   }
 }
